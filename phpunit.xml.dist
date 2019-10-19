@@ -1,0 +1,26 @@
+<phpunit beStrictAboutTestsThatDoNotTestAnything="true"
+		 beStrictAboutChangesToGlobalState="true"
+		 beStrictAboutOutputDuringTests="true"
+		 colors="true"
+		 stopOnFailure="false"
+		 bootstrap="./tests/bootstrap.php"
+>
+	<testsuites>
+		<testsuite name="Query Builder Test Suite">
+			<directory>./tests/</directory>
+		</testsuite>
+	</testsuites>
+
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory>./src/</directory>
+		</whitelist>
+	</filter>
+
+	<php>
+		<var name="DB_DSN" value="mysql:dbname=endocore_test;host=localhost" />
+		<var name="DB_USER" value="endocore" />
+		<var name="DB_PASSWD" value="" />
+		<var name="DB_DBNAME" value="endocore_test" />
+	</php>
+</phpunit>

@@ -1,0 +1,28 @@
+{
+    "name": "bloatless/query-builder",
+    "description": "A query builder for PDO MySQL.",
+    "keywords": [
+        "php",
+        "mysql",
+        "pdo",
+        "query builder",
+        "bloatless"
+    ],
+    "license": "MIT",
+    "homepage": "https://bloatless.org",
+    "authors": [
+        {
+            "name": "Simon Samtleben",
+            "email": "foo@bloatless.org"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bloatless\\QueryBuilder\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "ext-pdo": "*"
+    }
+}

@@ -89,6 +89,9 @@ abstract class StatementBuilder
     protected function quoteName(string $name): string
     {
         $name = str_replace('`', '', $name);
+        if ($name === '*') {
+            return $name;
+        }
         if (stripos($name, ' AS ') === false) {
             return $this->quoteSimpleName($name);
         }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\Exception;
+namespace Bloatless\Endocore\Components\QueryBuilder\Exception;
 
 /**
  * This exception is thrown in case of any database related errors.

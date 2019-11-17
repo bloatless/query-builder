@@ -1,14 +1,14 @@
 <?php
 
-namespace Bloatless\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
 
-use Bloatless\QueryBuilder\ConnectionAdapter\PdoMysql;
-use Bloatless\QueryBuilder\Factory;
-use Bloatless\QueryBuilder\StatementBuilder\SelectStatementBuilder;
-use Bloatless\QueryBuilder\Exception\DatabaseException;
-use Bloatless\QueryBuilder\Tests\Fixtures\QueryBuilderMock;
-use Bloatless\QueryBuilder\Tests\Fixtures\StatementBuilderMock;
-use Bloatless\QueryBuilder\Tests\Unit\DatabaseTest;
+use Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter\PdoMysql;
+use Bloatless\Endocore\Components\QueryBuilder\Factory;
+use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\SelectStatementBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+use Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures\QueryBuilderMock;
+use Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures\StatementBuilderMock;
+use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
 
 class QueryBuilderTest extends DatabaseTest
 {

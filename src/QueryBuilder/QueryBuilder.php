@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
 
-use Bloatless\QueryBuilder\StatementBuilder\StatementBuilder;
-use Bloatless\QueryBuilder\Exception\DatabaseException;
+use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\StatementBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
 
 abstract class QueryBuilder
 {

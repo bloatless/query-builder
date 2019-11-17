@@ -1,5 +1,5 @@
 {
-    "name": "bloatless/query-builder",
+    "name": "bloatless/endocore-query-builder",
     "description": "A query builder for PDO MySQL.",
     "keywords": [
         "php",
@@ -18,11 +18,14 @@
     ],
     "autoload": {
         "psr-4": {
-            "Bloatless\\QueryBuilder\\": "src/"
+            "Bloatless\\Endocore\\Components\\QueryBuilder\\": "src/"
         }
     },
     "require": {
         "php": "^7.2",
         "ext-pdo": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.3"
     }
 }

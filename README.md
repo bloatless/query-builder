@@ -94,7 +94,7 @@ $config = [
 The QueryBuilder factory needs to be initialized using a config array providing the connection credentials:
 
 ```php
-$db = new \Bloatless\QueryBuilder\Factory($config['db']);
+$db = new \Bloatless\Endocore\Components\QueryBuilder\Factory($config['db']);
 ```
 
 Once initialized the factory can be used to provide query-builder objects for various database operations:

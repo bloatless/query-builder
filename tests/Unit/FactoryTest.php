@@ -1,15 +1,15 @@
 <?php
 
-namespace Bloatless\QueryBuilder\Tests\Unit;
+namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit;
 
-use Bloatless\QueryBuilder\ConnectionAdapter\PdoMysql;
-use Bloatless\QueryBuilder\Factory;
-use Bloatless\QueryBuilder\QueryBuilder\DeleteQueryBuilder;
-use Bloatless\QueryBuilder\QueryBuilder\InsertQueryBuilder;
-use Bloatless\QueryBuilder\QueryBuilder\RawQueryBuilder;
-use Bloatless\QueryBuilder\QueryBuilder\SelectQueryBuilder;
-use Bloatless\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
-use Bloatless\QueryBuilder\Exception\DatabaseException;
+use Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter\PdoMysql;
+use Bloatless\Endocore\Components\QueryBuilder\Factory;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\DeleteQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\InsertQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\RawQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\SelectQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
 
 class FactoryTest extends DatabaseTest
 {

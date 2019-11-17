@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
 
-use Bloatless\QueryBuilder\Exception\DatabaseException;
+use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
 
 /**
- * @property \Bloatless\QueryBuilder\StatementBuilder\SelectStatementBuilder $statementBuilder
+ * @property \Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\SelectStatementBuilder $statementBuilder
  */
 class SelectQueryBuilder extends WhereQueryBuilder
 {
@@ -263,7 +263,7 @@ class SelectQueryBuilder extends WhereQueryBuilder
      * Executes select query and returns all matching rows as array of objects.
      *
      * @return array
-     * @throws \Bloatless\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
      */
     public function get(): array
     {

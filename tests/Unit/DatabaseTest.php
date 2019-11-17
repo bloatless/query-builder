@@ -1,6 +1,6 @@
 <?php
 
-namespace Bloatless\QueryBuilder\Tests\Unit;
+namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 

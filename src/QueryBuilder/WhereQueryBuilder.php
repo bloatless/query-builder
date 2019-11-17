@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
 
 abstract class WhereQueryBuilder extends QueryBuilder
 {

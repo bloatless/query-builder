@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\StatementBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\StatementBuilder;
 
 abstract class StatementBuilder
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Bloatless\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
 
-use Bloatless\QueryBuilder\Factory;
-use Bloatless\QueryBuilder\QueryBuilder\SelectQueryBuilder;
-use Bloatless\QueryBuilder\Exception\DatabaseException;
-use Bloatless\QueryBuilder\Tests\Unit\DatabaseTest;
+use Bloatless\Endocore\Components\QueryBuilder\Factory;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\SelectQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
 
 class SelectQueryBuilderTest extends DatabaseTest
 {

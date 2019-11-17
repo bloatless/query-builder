@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder;
 
-use Bloatless\QueryBuilder\ConnectionAdapter\PdoMysql;
-use Bloatless\QueryBuilder\Exception\DatabaseException;
-use Bloatless\QueryBuilder\QueryBuilder\DeleteQueryBuilder;
-use Bloatless\QueryBuilder\QueryBuilder\InsertQueryBuilder;
-use Bloatless\QueryBuilder\QueryBuilder\RawQueryBuilder;
-use Bloatless\QueryBuilder\QueryBuilder\SelectQueryBuilder;
-use Bloatless\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
-use Bloatless\QueryBuilder\StatementBuilder\DeleteStatementBuilder;
-use Bloatless\QueryBuilder\StatementBuilder\InsertStatementBuilder;
-use Bloatless\QueryBuilder\StatementBuilder\RawStatementBuider;
-use Bloatless\QueryBuilder\StatementBuilder\SelectStatementBuilder;
-use Bloatless\QueryBuilder\StatementBuilder\UpdateStatementBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter\PdoMysql;
+use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\DeleteQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\InsertQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\RawQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\SelectQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\DeleteStatementBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\InsertStatementBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\RawStatementBuider;
+use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\SelectStatementBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\UpdateStatementBuilder;
 
 class Factory
 {

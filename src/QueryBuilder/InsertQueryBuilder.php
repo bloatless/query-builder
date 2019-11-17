@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
 
 /**
- * @property \Bloatless\QueryBuilder\StatementBuilder\InsertStatementBuilder $statementBuilder
+ * @property \Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\InsertStatementBuilder $statementBuilder
  */
 class InsertQueryBuilder extends QueryBuilder
 {
@@ -52,7 +52,7 @@ class InsertQueryBuilder extends QueryBuilder
      *
      * @param array $data
      * @return int
-     * @throws \Bloatless\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
      */
     public function row(array $data): int
     {
@@ -66,7 +66,7 @@ class InsertQueryBuilder extends QueryBuilder
      * Inserts multiple rows into database.
      *
      * @param array $data
-     * @throws \Bloatless\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
      */
     public function rows(array $data): void
     {
@@ -98,7 +98,7 @@ class InsertQueryBuilder extends QueryBuilder
     /**
      * Builds the SQL statement from all attributes previously set.
      *
-     * @throws \Bloatless\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
      * @return string
      */
     protected function buildStatement(): string

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\StatementBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\StatementBuilder;
 
-use Bloatless\QueryBuilder\Exception\DatabaseException;
+use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
 
 class InsertStatementBuilder extends StatementBuilder
 {

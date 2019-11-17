@@ -1,8 +1,8 @@
 <?php
 
-namespace Bloatless\QueryBuilder\Tests\Unit\StatementBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\StatementBuilder;
 
-use Bloatless\QueryBuilder\StatementBuilder\RawStatementBuider;
+use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\RawStatementBuider;
 use PHPUnit\Framework\TestCase;
 
 class RawStatementBuilderTest extends TestCase

@@ -1,10 +1,10 @@
 <?php
 
-namespace Bloatless\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
 
-use Bloatless\QueryBuilder\Factory;
-use Bloatless\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
-use Bloatless\QueryBuilder\Tests\Unit\DatabaseTest;
+use Bloatless\Endocore\Components\QueryBuilder\Factory;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
 
 class UpdateQueryBuilderTest extends DatabaseTest
 {

@@ -6,4 +6,4 @@ define('TESTS_ROOT', __DIR__);
 $autoloader = require TESTS_ROOT . '/../vendor/autoload.php';
 
 // Register test classes
-$autoloader->addPsr4('Bloatless\QueryBuilder\Tests\\', TESTS_ROOT);
+$autoloader->addPsr4('Bloatless\Endocore\Components\QueryBuilder\Tests\\', TESTS_ROOT);

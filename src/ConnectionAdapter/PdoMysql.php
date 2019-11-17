@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\ConnectionAdapter;
+namespace Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter;
 
-use Bloatless\QueryBuilder\Exception\DatabaseException;
+use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
 
 class PdoMysql implements ConnectionAdapterInterface
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bloatless\QueryBuilder\Tests\Fixtures;
+namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures;
 
-use Bloatless\QueryBuilder\QueryBuilder\QueryBuilder;
+use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\QueryBuilder;
 
 class QueryBuilderMock extends QueryBuilder
 {

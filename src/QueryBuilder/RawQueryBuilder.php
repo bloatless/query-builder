@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\QueryBuilder\QueryBuilder;
+namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
 
 /**
- * @property \Bloatless\QueryBuilder\StatementBuilder\RawStatementBuider $statementBuilder
+ * @property \Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\RawStatementBuider $statementBuilder
  */
 class RawQueryBuilder extends QueryBuilder
 {
@@ -38,7 +38,7 @@ class RawQueryBuilder extends QueryBuilder
     * Executes raw statement and returns all matching rows as array of objects.
     *
     * @return array
-     * @throws \Bloatless\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
     */
     public function get(): array
     {
@@ -50,7 +50,7 @@ class RawQueryBuilder extends QueryBuilder
     /**
      * Executes a raw statement.
      *
-     * @throws \Bloatless\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
      */
     public function run(): void
     {

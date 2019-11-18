@@ -13,7 +13,7 @@
 You can install the library using composer:
 
 ```
-php composer.phar require bloatless/query-builder
+php composer.phar require bloatless/endocore-query-builder
 ``` 
 
 ## Usage

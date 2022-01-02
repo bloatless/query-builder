@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\StatementBuilder;
+namespace Bloatless\QueryBuilder\StatementBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+require_once __DIR__ . '/../Exception/QueryBuilderException.php';
+require_once __DIR__ . '/StatementBuilder.php';
+
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
 
 class InsertStatementBuilder extends StatementBuilder
 {
@@ -43,13 +46,13 @@ class InsertStatementBuilder extends StatementBuilder
      * Adds column names and values to insert statement.
      *
      * @param array $rows
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      * @return void
      */
     public function addRows(array $rows): void
     {
         if (empty($rows)) {
-            throw new DatabaseException('Can not perform insert with empty rows.');
+            throw new QueryBuilderException('Can not perform insert with empty rows.');
         }
 
         // Collect column names and add to statement:

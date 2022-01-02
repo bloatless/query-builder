@@ -1,9 +1,12 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\StatementBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\StatementBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\InsertStatementBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+require_once SRC_ROOT . '/Exception/QueryBuilderException.php';
+require_once SRC_ROOT . '/StatementBuilder/InsertStatementBuilder.php';
+
+use Bloatless\QueryBuilder\StatementBuilder\InsertStatementBuilder;
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
 use PHPUnit\Framework\TestCase;
 
 class InsertStatementBuilderTest extends TestCase
@@ -38,7 +41,7 @@ class InsertStatementBuilderTest extends TestCase
     public function testAddRowsWithEmptyRows()
     {
         $builder = new InsertStatementBuilder;
-        $this->expectException(DatabaseException::class);
+        $this->expectException(QueryBuilderException::class);
         $builder->addRows([]);
     }
 }

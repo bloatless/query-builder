@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
+namespace Bloatless\QueryBuilder\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+require_once __DIR__ . '/WhereQueryBuilder.php';
+
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
 
 /**
- * @property \Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\SelectStatementBuilder $statementBuilder
+ * @property \Bloatless\QueryBuilder\StatementBuilder\SelectStatementBuilder $statementBuilder
  */
 class SelectQueryBuilder extends WhereQueryBuilder
 {
@@ -263,7 +265,7 @@ class SelectQueryBuilder extends WhereQueryBuilder
      * Executes select query and returns all matching rows as array of objects.
      *
      * @return array
-     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\QueryBuilder\Exception\QueryBuilderException
      */
     public function get(): array
     {
@@ -276,7 +278,7 @@ class SelectQueryBuilder extends WhereQueryBuilder
      * Executes select query and returns first matching row.
      *
      * @return \stdClass|null
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      */
     public function first(): ?\stdClass
     {
@@ -292,7 +294,7 @@ class SelectQueryBuilder extends WhereQueryBuilder
      * @param string $column
      * @param string $keyBy
      * @return array
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      */
     public function pluck(string $column, string $keyBy = ''): array
     {
@@ -303,10 +305,10 @@ class SelectQueryBuilder extends WhereQueryBuilder
             return [];
         }
         if (!isset($rows[0][$column])) {
-            throw new DatabaseException('Column not found in result.');
+            throw new QueryBuilderException('Column not found in result.');
         }
         if (!empty($keyBy) && !isset($rows[0][$keyBy])) {
-            throw new DatabaseException('Column to use as key not found in result.');
+            throw new QueryBuilderException('Column to use as key not found in result.');
         }
         $indexKey = (!empty($keyBy)) ? $keyBy : null;
         return array_column($rows, $column, $indexKey);
@@ -316,14 +318,14 @@ class SelectQueryBuilder extends WhereQueryBuilder
      * Executes select query and returns number of matching rows.
      *
      * @return int
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      */
     public function count(): int
     {
         $this->flags['count'] = true;
         $pdoStatement = $this->provideStatement();
         $pdoStatement = $this->execute($pdoStatement);
-        return $pdoStatement->fetchColumn();
+        return (int) $pdoStatement->fetchColumn();
     }
 
     /**

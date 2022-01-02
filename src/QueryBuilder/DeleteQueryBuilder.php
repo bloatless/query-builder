@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
+namespace Bloatless\QueryBuilder\QueryBuilder;
+
+require_once __DIR__ . '/WhereQueryBuilder.php';
 
 /**
- * @property \Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\DeleteStatementBuilder $statementBuilder
+ * @property \Bloatless\QueryBuilder\StatementBuilder\DeleteStatementBuilder $statementBuilder
  */
 class DeleteQueryBuilder extends WhereQueryBuilder
 {
@@ -29,7 +31,7 @@ class DeleteQueryBuilder extends WhereQueryBuilder
     /**
      * Executes delete statement and returns affected rows.
      *
-     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\QueryBuilder\Exception\QueryBuilderException
      * @return int
      */
     public function delete(): int

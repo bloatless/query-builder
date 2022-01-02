@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
+namespace Bloatless\QueryBuilder\QueryBuilder;
+
+require_once __DIR__ . '/QueryBuilder.php';
 
 abstract class WhereQueryBuilder extends QueryBuilder
 {
@@ -182,20 +184,53 @@ abstract class WhereQueryBuilder extends QueryBuilder
     }
 
     /**
+     * Adds a raw where clause.
+     *
+     * @param string $clause
+     * @param array $bindings
+     * @return QueryBuilder
+     */
+    public function whereRaw(string $clause, array $bindings = []): QueryBuilder
+    {
+        $this->addWhere($clause, '', $bindings, 'AND', true);
+        return $this;
+    }
+
+    /**
+     * Adds a raw "or where" clause.
+     *
+     * @param string $clause
+     * @param array $bindings
+     * @return QueryBuilder
+     */
+    public function orWhereRaw(string $clause, array $bindings = []): QueryBuilder
+    {
+        $this->addWhere($clause, '', $bindings, 'OR', true);
+        return $this;
+    }
+
+    /**
      * Adds where condition to pool.
      *
      * @param string $key
      * @param string $operator
      * @param $value
      * @param string $concatenator
+     * @param bool $raw
      */
-    protected function addWhere(string $key, string $operator, $value, string $concatenator = 'AND'): void
-    {
+    protected function addWhere(
+        string $key,
+        string $operator,
+        $value,
+        string $concatenator = 'AND',
+        bool $raw = false
+    ): void {
         array_push($this->where, [
             'key' => $key,
             'operator' => $operator,
             'value' => $value,
             'concatenator' => $concatenator,
+            'raw' => $raw,
         ]);
     }
 }

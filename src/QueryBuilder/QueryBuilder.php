@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
+namespace Bloatless\QueryBuilder\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\StatementBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+require_once __DIR__ . '/../StatementBuilder/StatementBuilder.php';
+require_once __DIR__ . '/../Exception/QueryBuilderException.php';
+
+use Bloatless\QueryBuilder\StatementBuilder\StatementBuilder;
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
 
 abstract class QueryBuilder
 {
@@ -54,7 +57,7 @@ abstract class QueryBuilder
      * Builds the SQL statement and converts it into an PDO prepared statement object.
      *
      * @return \PDOStatement
-     * @throws DatabaseException()
+     * @throws QueryBuilderException()
      */
     protected function provideStatement(): \PDOStatement
     {
@@ -69,28 +72,32 @@ abstract class QueryBuilder
      * @param string $sqlStatement
      * @param array $bindingValues
      * @return \PDOStatement
-     * @throws DatabaseException()
+     * @throws QueryBuilderException()
      */
     protected function prepareStatement(string $sqlStatement, array $bindingValues): \PDOStatement
     {
-        $pdoStatement = $this->connection->prepare($sqlStatement);
-        if ($pdoStatement === false) {
-            $this->throwError($this->connection->errorInfo());
-        }
-
-        foreach ($bindingValues as $key => $value) {
-            if (is_int($value)) {
-                $pdoStatement->bindValue($key, $value, \PDO::PARAM_INT);
-            } elseif (is_bool($value)) {
-                $pdoStatement->bindValue($key, $value, \PDO::PARAM_BOOL);
-            } elseif (is_null($value)) {
-                $pdoStatement->bindValue($key, $value, \PDO::PARAM_NULL);
-            } else {
-                $pdoStatement->bindValue($key, $value, \PDO::PARAM_STR);
+        try {
+            $pdoStatement = $this->connection->prepare($sqlStatement);
+            if ($pdoStatement === false) {
+                $this->throwError($this->connection->errorInfo());
             }
-        }
 
-        return $pdoStatement;
+            foreach ($bindingValues as $key => $value) {
+                if (is_int($value)) {
+                    $pdoStatement->bindValue($key, $value, \PDO::PARAM_INT);
+                } elseif (is_bool($value)) {
+                    $pdoStatement->bindValue($key, $value, \PDO::PARAM_BOOL);
+                } elseif (is_null($value)) {
+                    $pdoStatement->bindValue($key, $value, \PDO::PARAM_NULL);
+                } else {
+                    $pdoStatement->bindValue($key, $value, \PDO::PARAM_STR);
+                }
+            }
+
+            return $pdoStatement;
+        } catch (\PDOException $e) {
+            throw new QueryBuilderException($e->getMessage());
+        }
     }
 
     /**
@@ -98,13 +105,17 @@ abstract class QueryBuilder
      *
      * @param \PDOStatement $pdoStatement
      * @return \PDOStatement
-     * @throws DatabaseException()
+     * @throws QueryBuilderException()
      */
     public function execute(\PDOStatement $pdoStatement): \PDOStatement
     {
-        $result = $pdoStatement->execute();
-        if ($result === false) {
-            $this->throwError($pdoStatement->errorInfo());
+        try {
+            $result = $pdoStatement->execute();
+            if ($result === false) {
+                $this->throwError($pdoStatement->errorInfo());
+            }
+        } catch (\PDOException $e) {
+            throw new QueryBuilderException($e->getMessage());
         }
 
         return $pdoStatement;
@@ -114,13 +125,13 @@ abstract class QueryBuilder
      * Throws a query exception with error message from PDO.
      *
      * @param array $errorInfo
-     * @throws DatabaseException()
+     * @throws QueryBuilderException()
      * @return void
      */
     protected function throwError(array $errorInfo): void
     {
         $errorMessage = $errorInfo[2] ?? 'Unspecified SQL error.';
-        throw new DatabaseException($errorMessage);
+        throw new QueryBuilderException($errorMessage);
     }
 
     /**

@@ -1,8 +1,10 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\StatementBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\StatementBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\SelectStatementBuilder;
+require_once SRC_ROOT . '/StatementBuilder/SelectStatementBuilder.php';
+
+use Bloatless\QueryBuilder\StatementBuilder\SelectStatementBuilder;
 use PHPUnit\Framework\TestCase;
 
 class SelectStatementBuilderTest extends TestCase

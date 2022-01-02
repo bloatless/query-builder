@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\QueryBuilder;
+namespace Bloatless\QueryBuilder\QueryBuilder;
+
+require_once __DIR__ . '/WhereQueryBuilder.php';
 
 /**
- * @property \Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\UpdateStatementBuilder $statementBuilder
+ * @property \Bloatless\QueryBuilder\StatementBuilder\UpdateStatementBuilder $statementBuilder
  */
 class UpdateQueryBuilder extends WhereQueryBuilder
 {
@@ -35,7 +37,7 @@ class UpdateQueryBuilder extends WhereQueryBuilder
      * Sets columns/values to update and executes statement. Returns number of affected rows.
      *
      * @param array $cols
-     * @throws \Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException
+     * @throws \Bloatless\QueryBuilder\Exception\QueryBuilderException
      * @return int
      */
     public function update(array $cols): int

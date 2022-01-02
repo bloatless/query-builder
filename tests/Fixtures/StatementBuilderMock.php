@@ -1,8 +1,10 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures;
+namespace Bloatless\QueryBuilder\Test\Fixtures;
 
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\StatementBuilder;
+require_once SRC_ROOT . '/StatementBuilder/StatementBuilder.php';
+
+use Bloatless\QueryBuilder\StatementBuilder\StatementBuilder;
 
 class StatementBuilderMock extends StatementBuilder
 {

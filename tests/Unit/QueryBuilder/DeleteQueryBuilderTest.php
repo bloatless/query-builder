@@ -1,40 +1,39 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\Factory;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\DeleteQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
+require_once SRC_ROOT . '/QueryBuilder.php';
+require_once SRC_ROOT . '/QueryBuilderFactory.php';
+require_once SRC_ROOT . '/QueryBuilder/DeleteQueryBuilder.php';
 
-class DeleteQueryBuilderTest extends DatabaseTest
+require_once __DIR__ . '/../AbstractQueryBuilderTest.php';
+
+use Bloatless\QueryBuilder\QueryBuilder;
+use Bloatless\QueryBuilder\QueryBuilderFactory;
+use Bloatless\QueryBuilder\QueryBuilder\DeleteQueryBuilder;
+use Bloatless\QueryBuilder\Test\Unit\AbstractQueryBuilderTest;
+
+class DeleteQueryBuilderTest extends AbstractQueryBuilderTest
 {
-    /**
-     * @var array $config
-     */
-    public $config;
-
-    /**
-     * @var Factory $factory
-     */
-    public $factory;
+    private QueryBuilder $db;
 
     public function setUp(): void
     {
         parent::setUp();
-        $config = include TESTS_ROOT . '/Fixtures/config.php';
-        $this->config = $config['db'];
-        $this->factory = new Factory($this->config);
+        $config = include TESTS_ROOT . '/Fixtures/config/config.php';
+        $factory = new QueryBuilderFactory($config);
+        $this->db = $factory->make();
     }
 
     public function testFrom()
     {
-        $queryBuilder = $this->factory->makeDelete();
+        $queryBuilder = $this->db->makeDelete();
         $this->assertInstanceOf(DeleteQueryBuilder::class, $queryBuilder->from('customers'));
     }
 
     public function testDelete()
     {
-        $queryBuilder = $this->factory->makeDelete();
+        $queryBuilder = $this->db->makeDelete();
         $affectedRows = $queryBuilder->from('customers')
             ->whereEquals('customer_id', 4)
             ->delete();
@@ -44,7 +43,7 @@ class DeleteQueryBuilderTest extends DatabaseTest
 
     public function testReset()
     {
-        $builder = $this->factory->makeDelete()
+        $builder = $this->db->makeDelete()
             ->from('customers')
             ->whereEquals('customer_id', 1);
         $builder->reset();

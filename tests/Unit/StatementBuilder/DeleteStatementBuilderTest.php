@@ -1,8 +1,10 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\StatementBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\StatementBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\DeleteStatementBuilder;
+require_once SRC_ROOT . '/StatementBuilder/DeleteStatementBuilder.php';
+
+use Bloatless\QueryBuilder\StatementBuilder\DeleteStatementBuilder;
 use PHPUnit\Framework\TestCase;
 
 class DeleteStatementBuilderTest extends TestCase

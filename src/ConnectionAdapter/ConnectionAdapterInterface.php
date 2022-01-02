@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter;
+namespace Bloatless\QueryBuilder\ConnectionAdapter;
 
 interface ConnectionAdapterInterface
 {

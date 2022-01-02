@@ -1,35 +1,35 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\Factory;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\SelectQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
+require_once SRC_ROOT . '/QueryBuilder.php';
+require_once SRC_ROOT . '/QueryBuilderFactory.php';
+require_once SRC_ROOT . '/QueryBuilder/SelectQueryBuilder.php';
+require_once SRC_ROOT . '/Exception/QueryBuilderException.php';
 
-class SelectQueryBuilderTest extends DatabaseTest
+require_once __DIR__ . '/../AbstractQueryBuilderTest.php';
+
+use Bloatless\QueryBuilder\QueryBuilder;
+use Bloatless\QueryBuilder\QueryBuilderFactory;
+use Bloatless\QueryBuilder\QueryBuilder\SelectQueryBuilder;
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
+use Bloatless\QueryBuilder\Test\Unit\AbstractQueryBuilderTest;
+
+class SelectQueryBuilderTest extends AbstractQueryBuilderTest
 {
-    /**
-     * @var array $config
-     */
-    public $config;
-
-    /**
-     * @var Factory $factory
-     */
-    public $factory;
+    private QueryBuilder $db;
 
     public function setUp(): void
     {
         parent::setUp();
-        $config = include TESTS_ROOT . '/Fixtures/config.php';
-        $this->config = $config['db'];
-        $this->factory = new Factory($this->config);
+        $config = include TESTS_ROOT . '/Fixtures/config/config.php';
+        $factory = new QueryBuilderFactory($config);
+        $this->db = $factory->make();
     }
 
     public function testSetter()
     {
-        $builder = $this->factory->makeSelect()
+        $builder = $this->db->makeSelect()
             ->distinct()
             ->cols(['firstname', 'lastname'])
             ->from('customers')
@@ -47,7 +47,7 @@ class SelectQueryBuilderTest extends DatabaseTest
 
     public function testGet()
     {
-        $result = $this->factory->makeSelect()
+        $result = $this->db->makeSelect()
             ->cols(['firstname', 'lastname'])
             ->from('customers')
             ->get();
@@ -57,7 +57,7 @@ class SelectQueryBuilderTest extends DatabaseTest
 
     public function testGetWithEmptyResult()
     {
-        $result = $this->factory->makeSelect()
+        $result = $this->db->makeSelect()
             ->from('customers')
             ->whereEquals('customer_id', 42)
             ->get();
@@ -67,7 +67,7 @@ class SelectQueryBuilderTest extends DatabaseTest
     public function testFirst()
     {
         // test with result:
-        $result = $this->factory->makeSelect()
+        $result = $this->db->makeSelect()
             ->cols(['firstname', 'lastname'])
             ->from('customers')
             ->first();
@@ -77,7 +77,7 @@ class SelectQueryBuilderTest extends DatabaseTest
 
     public function testFirstWithEmptyResult()
     {
-        $result = $this->factory->makeSelect()
+        $result = $this->db->makeSelect()
             ->from('customers')
             ->whereEquals('customer_id', 42)
             ->first();
@@ -86,7 +86,7 @@ class SelectQueryBuilderTest extends DatabaseTest
 
     public function testPluckWithColumnOnly()
     {
-        $result = $this->factory->makeSelect()
+        $result = $this->db->makeSelect()
             ->from('customers')
             ->whereEquals('customer_id', 1)
             ->pluck('firstname');
@@ -95,7 +95,7 @@ class SelectQueryBuilderTest extends DatabaseTest
 
     public function testPluckWithColumnAndKeyBy()
     {
-        $result = $this->factory->makeSelect()
+        $result = $this->db->makeSelect()
             ->from('customers')
             ->whereEquals('customer_id', 2)
             ->pluck('firstname', 'customer_id');
@@ -104,7 +104,7 @@ class SelectQueryBuilderTest extends DatabaseTest
 
     public function testPluckWithEmptyResult()
     {
-        $result = $this->factory->makeSelect()
+        $result = $this->db->makeSelect()
             ->from('customers')
             ->whereEquals('customer_id', 42)
             ->pluck('firstname', 'customer_id');
@@ -113,23 +113,23 @@ class SelectQueryBuilderTest extends DatabaseTest
 
     public function testPluckWithInvalidColumn()
     {
-        $this->expectException(DatabaseException::class);
-        $this->factory->makeSelect()
+        $this->expectException(QueryBuilderException::class);
+        $this->db->makeSelect()
             ->from('customers')
             ->pluck('foo');
     }
 
     public function testPluckWithInvalidKeyBy()
     {
-        $this->expectException(DatabaseException::class);
-        $this->factory->makeSelect()
+        $this->expectException(QueryBuilderException::class);
+        $this->db->makeSelect()
             ->from('customers')
             ->pluck('firstname', 'foo');
     }
 
     public function testCount()
     {
-        $count = $this->factory->makeSelect()
+        $count = $this->db->makeSelect()
             ->from('customers')
             ->count();
         $this->assertEquals(4, $count);
@@ -137,7 +137,7 @@ class SelectQueryBuilderTest extends DatabaseTest
 
     public function testReset()
     {
-        $builder = $this->factory->makeSelect()
+        $builder = $this->db->makeSelect()
             ->from('customers')
             ->whereEquals('customer_id', 1);
         $builder->reset();

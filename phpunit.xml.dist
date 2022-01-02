@@ -2,7 +2,7 @@
 		 beStrictAboutChangesToGlobalState="true"
 		 beStrictAboutOutputDuringTests="true"
 		 colors="true"
-		 stopOnFailure="false"
+		 stopOnFailure="true"
 		 bootstrap="./tests/bootstrap.php"
 >
 	<testsuites>
@@ -18,9 +18,14 @@
 	</filter>
 
 	<php>
-		<var name="DB_DSN" value="mysql:dbname=endocore_test;host=localhost" />
-		<var name="DB_USER" value="endocore" />
-		<var name="DB_PASSWD" value="" />
-		<var name="DB_DBNAME" value="endocore_test" />
+		<!--<var name="DB_DSN" value="mysql:dbname=bloatless;host=localhost" />-->
+		<!--<var name="DB_DSN" value="sqlite:./tests/Fixtures/storage/sqlite.db" />-->
+
+		<var name="MYSQL_HOST" value="localhost" />
+		<var name="MYSQL_USER" value="bloatless" />
+		<var name="MYSQL_PASSWD" value="bloatless" />
+		<var name="MYSQL_DB" value="bloatless" />
+
+		<var name="SQLITE_DB" value="./tests/Fixtures/storage/sqlite.db" />
 	</php>
 </phpunit>

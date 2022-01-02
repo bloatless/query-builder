@@ -2,22 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder;
+namespace Bloatless\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter\PdoMysql;
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\DeleteQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\InsertQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\RawQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\SelectQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\DeleteStatementBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\InsertStatementBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\RawStatementBuider;
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\SelectStatementBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\UpdateStatementBuilder;
+require_once __DIR__ . '/ConnectionAdapter/PdoMysql.php';
+require_once __DIR__ . '/ConnectionAdapter/PdoSqlite.php';
+require_once __DIR__ . '/Exception/QueryBuilderException.php';
+require_once __DIR__ . '/QueryBuilder/DeleteQueryBuilder.php';
+require_once __DIR__ . '/QueryBuilder/InsertQueryBuilder.php';
+require_once __DIR__ . '/QueryBuilder/RawQueryBuilder.php';
+require_once __DIR__ . '/QueryBuilder/SelectQueryBuilder.php';
+require_once __DIR__ . '/QueryBuilder/UpdateQueryBuilder.php';
+require_once __DIR__ . '/StatementBuilder/DeleteStatementBuilder.php';
+require_once __DIR__ . '/StatementBuilder/InsertStatementBuilder.php';
+require_once __DIR__ . '/StatementBuilder/RawStatementBuilder.php';
+require_once __DIR__ . '/StatementBuilder/SelectStatementBuilder.php';
+require_once __DIR__ . '/StatementBuilder/UpdateStatementBuilder.php';
 
-class Factory
+use Bloatless\QueryBuilder\ConnectionAdapter\PdoMysql;
+use Bloatless\QueryBuilder\ConnectionAdapter\PdoSqlite;
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
+use Bloatless\QueryBuilder\QueryBuilder\DeleteQueryBuilder;
+use Bloatless\QueryBuilder\QueryBuilder\InsertQueryBuilder;
+use Bloatless\QueryBuilder\QueryBuilder\RawQueryBuilder;
+use Bloatless\QueryBuilder\QueryBuilder\SelectQueryBuilder;
+use Bloatless\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
+use Bloatless\QueryBuilder\StatementBuilder\DeleteStatementBuilder;
+use Bloatless\QueryBuilder\StatementBuilder\InsertStatementBuilder;
+use Bloatless\QueryBuilder\StatementBuilder\RawStatementBuilder;
+use Bloatless\QueryBuilder\StatementBuilder\SelectStatementBuilder;
+use Bloatless\QueryBuilder\StatementBuilder\UpdateStatementBuilder;
+
+class QueryBuilder
 {
     /**
      * @var array $connections
@@ -35,17 +50,13 @@ class Factory
     protected $defaultConnectionName = '';
 
     /**
-     * @param array $config
-     * @throws DatabaseException
+     * @param array $credentials
+     * @param string $defaultConnectionName
      */
-    public function __construct(array $config)
+    public function __construct(array $credentials, string $defaultConnectionName)
     {
-        if (empty($config['connections'])) {
-            throw new DatabaseException('Invalid database configuration. Connections can not be empty.');
-        }
-
-        $this->credentials = $config['connections'];
-        $this->defaultConnectionName = $config['default_connection'] ?? key(reset($config['connections']));
+        $this->credentials = $credentials;
+        $this->defaultConnectionName = $defaultConnectionName;
     }
 
     /**
@@ -53,7 +64,7 @@ class Factory
      *
      * @param string $connectionName
      * @return InsertQueryBuilder
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      */
     public function makeInsert(string $connectionName = ''): InsertQueryBuilder
     {
@@ -67,7 +78,7 @@ class Factory
      *
      * @param string $connectionName
      * @return SelectQueryBuilder
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      */
     public function makeSelect(string $connectionName = ''): SelectQueryBuilder
     {
@@ -80,7 +91,7 @@ class Factory
      * Creates a new UpdateQueryBuilder instance.
      *
      * @param string $connectionName
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      * @return UpdateQueryBuilder
      */
     public function makeUpdate(string $connectionName = ''): UpdateQueryBuilder
@@ -94,7 +105,7 @@ class Factory
      * Creates a new UpdateQueryBuilder instance.
      *
      * @param string $connectionName
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      * @return DeleteQueryBuilder
      */
     public function makeDelete(string $connectionName = ''): DeleteQueryBuilder
@@ -109,12 +120,12 @@ class Factory
      *
      * @param string $connectionName
      * @return RawQueryBuilder
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      */
     public function makeRaw(string $connectionName = ''): RawQueryBuilder
     {
         $connection = $this->provideConnection($connectionName);
-        $statementBuilder = new RawStatementBuider;
+        $statementBuilder = new RawStatementBuilder;
         return new RawQueryBuilder($connection, $statementBuilder);
     }
 
@@ -123,7 +134,7 @@ class Factory
      *
      * @param string $connectionName
      * @return \PDO
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      */
     public function provideConnection(string $connectionName = ''): \PDO
     {
@@ -140,8 +151,11 @@ class Factory
             case 'mysql':
                 $adapter = new PdoMysql;
                 break;
+            case 'sqlite':
+                $adapter = new PdoSqlite;
+                break;
             default:
-                throw new DatabaseException('Unsupported database driver. Check config.');
+                throw new QueryBuilderException('Unsupported database driver. Check config.');
         }
 
         $connection = $adapter->connect($dbConfig);
@@ -178,12 +192,12 @@ class Factory
      *
      * @param string $connectionName
      * @return \PDO
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      */
     public function getConnection(string $connectionName): \PDO
     {
         if (!isset($this->connections[$connectionName])) {
-            throw new DatabaseException(sprintf('Connection (%s) not found in pool.', $connectionName));
+            throw new QueryBuilderException(sprintf('Connection (%s) not found in pool.', $connectionName));
         }
         return $this->connections[$connectionName];
     }

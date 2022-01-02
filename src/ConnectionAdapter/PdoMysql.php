@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter;
+namespace Bloatless\QueryBuilder\ConnectionAdapter;
 
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+require_once __DIR__ . '/ConnectionAdapterInterface.php';
+require_once __DIR__ . '/../Exception/QueryBuilderException.php';
+
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
 
 class PdoMysql implements ConnectionAdapterInterface
 {
@@ -13,7 +16,7 @@ class PdoMysql implements ConnectionAdapterInterface
      * @todo Add support for PDO options
      *
      * @param array $credentials
-     * @throws DatabaseException
+     * @throws QueryBuilderException
      * @throws \Exception
      * @return \PDO
      */
@@ -50,7 +53,7 @@ class PdoMysql implements ConnectionAdapterInterface
             $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
             return $pdo;
         } catch (\PDOException $e) {
-            throw new DatabaseException(sprintf('Error connecting to database (%s)', $e->getMessage()));
+            throw new QueryBuilderException(sprintf('Error connecting to database (%s)', $e->getMessage()));
         }
     }
 

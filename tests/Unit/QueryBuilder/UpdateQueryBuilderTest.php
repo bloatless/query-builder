@@ -1,40 +1,39 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\Factory;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
+require_once SRC_ROOT . '/QueryBuilder.php';
+require_once SRC_ROOT . '/QueryBuilderFactory.php';
+require_once SRC_ROOT . '/QueryBuilder/UpdateQueryBuilder.php';
 
-class UpdateQueryBuilderTest extends DatabaseTest
+require_once __DIR__ . '/../AbstractQueryBuilderTest.php';
+
+use Bloatless\QueryBuilder\QueryBuilder;
+use Bloatless\QueryBuilder\QueryBuilderFactory;
+use Bloatless\QueryBuilder\QueryBuilder\UpdateQueryBuilder;
+use Bloatless\QueryBuilder\Test\Unit\AbstractQueryBuilderTest;
+
+class UpdateQueryBuilderTest extends AbstractQueryBuilderTest
 {
-    /**
-     * @var array $config
-     */
-    public $config;
-
-    /**
-     * @var Factory $factory
-     */
-    public $factory;
+    private QueryBuilder $db;
 
     public function setUp(): void
     {
         parent::setUp();
-        $config = include TESTS_ROOT . '/Fixtures/config.php';
-        $this->config = $config['db'];
-        $this->factory = new Factory($this->config);
+        $config = include TESTS_ROOT . '/Fixtures/config/config.php';
+        $factory = new QueryBuilderFactory($config);
+        $this->db = $factory->make();
     }
 
     public function testTable()
     {
-        $builder = $this->factory->makeUpdate();
+        $builder = $this->db->makeUpdate();
         $this->assertInstanceOf(UpdateQueryBuilder::class, $builder->table('customers'));
     }
 
     public function testUpdate()
     {
-        $builder = $this->factory->makeUpdate();
+        $builder = $this->db->makeUpdate();
         $rowsAffected = $builder->table('customers')
             ->whereEquals('firstname', 'Homer')
             ->update([
@@ -45,7 +44,7 @@ class UpdateQueryBuilderTest extends DatabaseTest
 
     public function testReset()
     {
-        $builder = $this->factory->makeUpdate()
+        $builder = $this->db->makeUpdate()
             ->table('foobar')
             ->whereEquals('customer_id', 1);
         $builder->reset();

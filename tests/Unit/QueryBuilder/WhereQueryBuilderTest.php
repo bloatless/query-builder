@@ -1,35 +1,33 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter\PdoMysql;
-use Bloatless\Endocore\Components\QueryBuilder\Factory;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures\StatementBuilderMock;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures\WhereQueryBuilderMock;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
+require_once __DIR__ . '/../AbstractQueryBuilderTest.php';
+require_once __DIR__ . '/../../Fixtures/StatementBuilderMock.php';
+require_once __DIR__ . '/../../Fixtures/WhereQueryBuilderMock.php';
 
-class WhereQueryBuilderTest extends DatabaseTest
+use Bloatless\QueryBuilder\Test\Fixtures\StatementBuilderMock;
+use Bloatless\QueryBuilder\Test\Fixtures\WhereQueryBuilderMock;
+use Bloatless\QueryBuilder\Test\Unit\AbstractQueryBuilderTest;
+
+class WhereQueryBuilderTest extends AbstractQueryBuilderTest
 {
-    public $config;
-
     public $defaultCredentials;
-
-    public $factory;
 
     public function setUp(): void
     {
         parent::setUp();
-        $configData = include TESTS_ROOT . '/Fixtures/config.php';
-        $this->config = $configData['db'];
-        $defaultConnection = $this->config['default_connection'];
-        $this->defaultCredentials = $this->config['connections'][$defaultConnection];
+        $configData = include TESTS_ROOT . '/Fixtures/config/config.php';
+        $config = $configData['db'];
+        $defaultConnection = $config['default_connection'];
+        $this->defaultCredentials = $config['connections'][$defaultConnection];
     }
 
     public function testSetter()
     {
-        $connection = (new PdoMysql)->connect($this->defaultCredentials);
+
         $statementBuilder = new StatementBuilderMock;
-        $builder = new WhereQueryBuilderMock($connection, $statementBuilder);
+        $builder = new WhereQueryBuilderMock($this->getConnection(), $statementBuilder);
         $builder = $builder->where('customer_id', '=', 1)
             ->whereEquals('customer_id', 1)
             ->orWhere('customer_id', '=', 2)
@@ -42,7 +40,9 @@ class WhereQueryBuilderTest extends DatabaseTest
             ->whereNull('firstname')
             ->whereNotNull('lastname')
             ->orWhereNull('lastname')
-            ->orWhereNotNull('firstname');
+            ->orWhereNotNull('firstname')
+            ->whereRaw('customer_id = 1')
+            ->orWhereRaw('customer_id = 2');
         $this->assertInstanceOf(WhereQueryBuilderMock::class, $builder);
     }
 }

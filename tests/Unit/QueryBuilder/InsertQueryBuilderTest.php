@@ -1,45 +1,44 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\Factory;
-use Bloatless\Endocore\Components\QueryBuilder\QueryBuilder\InsertQueryBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
+require_once SRC_ROOT . '/QueryBuilder.php';
+require_once SRC_ROOT . '/QueryBuilderFactory.php';
+require_once SRC_ROOT . '/QueryBuilder/InsertQueryBuilder.php';
 
-class InsertQueryBuilderTest extends DatabaseTest
+require_once __DIR__ . '/../AbstractQueryBuilderTest.php';
+
+use Bloatless\QueryBuilder\QueryBuilder;
+use Bloatless\QueryBuilder\QueryBuilderFactory;
+use Bloatless\QueryBuilder\QueryBuilder\InsertQueryBuilder;
+use Bloatless\QueryBuilder\Test\Unit\AbstractQueryBuilderTest;
+
+class InsertQueryBuilderTest extends AbstractQueryBuilderTest
 {
-    /**
-     * @var array $config
-     */
-    public $config;
-
-    /**
-     * @var Factory $factory
-     */
-    public $factory;
+    private QueryBuilder $db;
 
     public function setUp(): void
     {
         parent::setUp();
-        $config = include TESTS_ROOT . '/Fixtures/config.php';
-        $this->config = $config['db'];
-        $this->factory = new Factory($this->config);
+        $config = include TESTS_ROOT . '/Fixtures/config/config.php';
+        $factory = new QueryBuilderFactory($config);
+        $this->db = $factory->make();
     }
 
     public function testIgnore()
     {
-        $builder = $this->factory->makeInsert();
+        $builder = $this->db->makeInsert();
         $this->assertInstanceOf(InsertQueryBuilder::class, $builder->ignore());
     }
 
     public function testInto()
     {
-        $builder = $this->factory->makeInsert();
+        $builder = $this->db->makeInsert();
         $this->assertInstanceOf(InsertQueryBuilder::class, $builder->into('customers'));
     }
     public function testRow()
     {
-        $builder = $this->factory->makeInsert();
+        $builder = $this->db->makeInsert();
         $builder->into('customers')
             ->row([
                 'firstname' => 'Maggie',
@@ -51,7 +50,7 @@ class InsertQueryBuilderTest extends DatabaseTest
 
     public function testRows()
     {
-        $builder = $this->factory->makeInsert();
+        $builder = $this->db->makeInsert();
         $builder->into('customers')
             ->rows([
                 [
@@ -70,7 +69,7 @@ class InsertQueryBuilderTest extends DatabaseTest
 
     public function testGetLastInsertId()
     {
-        $builder = $this->factory->makeInsert();
+        $builder = $this->db->makeInsert();
         $builder->into('customers')
             ->row([
                 'firstname' => 'Maggie',
@@ -82,7 +81,7 @@ class InsertQueryBuilderTest extends DatabaseTest
 
     public function testReset()
     {
-        $builder = $this->factory->makeInsert()
+        $builder = $this->db->makeInsert()
             ->into('foobar');
         $builder->reset();
         $builder->into('customers')

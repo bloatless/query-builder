@@ -5,16 +5,43 @@
 <h1 align="center">Bloatless Query Builder</h1>
 
 <p align="center">
-    A query builder for PDO MySQL.
+    A query builder for PDO MySQL and SQLite.
 </p>
 
 ## Installation
 
+### Using phar
+
+Download the latest phar from the [releases page](https://github.com/bloatless/query-builder/releases) and
+include/use the lib in your project like any other PHP class:
+
+```php
+require_once '/path/to/query-builder.phar';
+
+$factory = new \Bloatless\QueryBuilder\QueryBuilderFactory($myConfig);
+$queryBuilder = $factory->make();
+```
+ 
+### Using composer
+
 You can install the library using composer:
 
 ```
-php composer.phar require bloatless/endocore-query-builder
+composer require bloatless/query-builder
 ``` 
+
+### Manually
+
+Clone or download the files from GitHub into your local project. You can than include/use the library within your
+project:
+
+```php
+require_once '/path/to/src/QueryBuilderFactory.php';
+
+$factory = new \Bloatless\QueryBuilder\QueryBuilderFactory($myConfig);
+$queryBuilder = $factory->make();
+```
+
 
 ## Usage
 
@@ -49,6 +76,8 @@ php composer.phar require bloatless/endocore-query-builder
     + [Where not null](#where-not-null)
     + [Or where null](#or-where-null)
     + [Or where not null](#or-where-not-null)
+    + [Where raw](#where-raw)
+    + [Or where raw](#or-where-raw)
   * [INSERT](#insert)
     + [Single row](#single-row)
     + [Multiple rows](#multiple-rows)
@@ -81,6 +110,11 @@ $config = [
                 'timezone' => 'Europe/Berlin', // Optional
             ],
             
+            'db2' => [
+                'driver' => 'sqlite',
+                'database' => '/path/to/sqlite.db',
+            ]
+            
             // add additional connections here...
         ],
     
@@ -94,7 +128,7 @@ $config = [
 The QueryBuilder factory needs to be initialized using a config array providing the connection credentials:
 
 ```php
-$db = new \Bloatless\Endocore\Components\QueryBuilder\Factory($config['db']);
+$db = new \Bloatless\QueryBuilder\QueryBuilder\Factory($config['db']);
 ```
 
 Once initialized the factory can be used to provide query-builder objects for various database operations:
@@ -338,6 +372,20 @@ $rows = $db->makeSelect()
 ->orWhereNotNull('customer_id')
 ```
 
+##### Where raw
+
+```php
+->whereRaw('TIMESTAMPDIFF(HOUR, `time`, NOW()) <= 24')
+
+->whereRaw('customer_id = :id', ['id' => 10])
+```
+
+##### Or where raw
+
+```php
+->orWhereRaw('TIMESTAMPDIFF(HOUR, `time`, NOW()) <= 24')
+```
+
 #### INSERT
 
 ##### Single row
@@ -423,9 +471,9 @@ $builder->reset();
 
 #### Security
 
-All query builders internally user PDO parameter binding to reduce the risk of injection attacks as much as possible.
-Additionally table names as well as field names are quoted - so you don't have to worry about that. This works on simple
-table names or when using aliases. Nevertheless you should always try to avoid using user input within sql statements! 
+All query builders internally use PDO parameter binding to reduce the risk of injection attacks as much as possible.
+Additionally, table names as well as field names are quoted - so you don't have to worry about that. This works on simple
+table names or when using aliases. Nevertheless, you should always try to avoid using user input within sql statements! 
 
 ## License
 

@@ -1,8 +1,10 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures;
+namespace Bloatless\QueryBuilder\Test\Fixtures;
 
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\WhereStatementBuilder;
+require_once SRC_ROOT . '/StatementBuilder/WhereStatementBuilder.php';
+
+use Bloatless\QueryBuilder\StatementBuilder\WhereStatementBuilder;
 
 class WhereStatementBuilderMock extends WhereStatementBuilder
 {

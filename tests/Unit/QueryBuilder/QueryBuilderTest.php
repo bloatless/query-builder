@@ -1,54 +1,34 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\QueryBuilder;
+namespace Bloatless\QueryBuilder\Test\Unit\QueryBuilder;
 
-use Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter\PdoMysql;
-use Bloatless\Endocore\Components\QueryBuilder\Factory;
-use Bloatless\Endocore\Components\QueryBuilder\StatementBuilder\SelectStatementBuilder;
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures\QueryBuilderMock;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Fixtures\StatementBuilderMock;
-use Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\DatabaseTest;
+require_once SRC_ROOT . '/StatementBuilder/SelectStatementBuilder.php';
+require_once SRC_ROOT . '/Exception/QueryBuilderException.php';
 
-class QueryBuilderTest extends DatabaseTest
+require_once __DIR__ . '/../AbstractQueryBuilderTest.php';
+require_once __DIR__ . '/../../Fixtures/QueryBuilderMock.php';
+require_once __DIR__ . '/../../Fixtures/StatementBuilderMock.php';
+
+use Bloatless\QueryBuilder\StatementBuilder\SelectStatementBuilder;
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
+use Bloatless\QueryBuilder\Test\Fixtures\QueryBuilderMock;
+use Bloatless\QueryBuilder\Test\Fixtures\StatementBuilderMock;
+use Bloatless\QueryBuilder\Test\Unit\AbstractQueryBuilderTest;
+
+class QueryBuilderTest extends AbstractQueryBuilderTest
 {
-    /**
-     * @var array $config
-     */
-    public $config;
-
-    /**
-     * @var Factory $factory
-     */
-    public $factory;
-
-    /**
-     * @var \PDO $connection
-     */
-    public $connection;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $config = include TESTS_ROOT . '/Fixtures/config.php';
-        $defaultConnectionName = $config['db']['default_connection'];
-        $this->config = $config['db'];
-        $this->factory = new Factory($this->config);
-        $this->connection = (new PdoMysql)->connect($this->config['connections'][$defaultConnectionName]);
-    }
-
     public function testCanBeInitialized()
     {
 
         $statementBuilder = new StatementBuilderMock;
-        $queryBuilder = new QueryBuilderMock($this->connection, $statementBuilder);
+        $queryBuilder = new QueryBuilderMock($this->getConnection(), $statementBuilder);
         $this->assertInstanceOf(QueryBuilderMock::class, $queryBuilder);
     }
 
     public function testSetGetStatementBuilder()
     {
         $statementBuilder = new StatementBuilderMock;
-        $queryBuilder = new QueryBuilderMock($this->connection, $statementBuilder);
+        $queryBuilder = new QueryBuilderMock($this->getConnection(), $statementBuilder);
 
         $selectStatementBuilder = new SelectStatementBuilder;
         $queryBuilder->setStatementBuilder($selectStatementBuilder);
@@ -58,24 +38,15 @@ class QueryBuilderTest extends DatabaseTest
     public function testExecuteWithValidStatement()
     {
         $statementBuilder = new StatementBuilderMock;
-        $queryBuilder = new QueryBuilderMock($this->connection, $statementBuilder);
-        $statement = $this->connection->prepare('SELECT COUNT(*) FROM `customers`');
+        $queryBuilder = new QueryBuilderMock($this->getConnection(), $statementBuilder);
+        $statement = $this->getConnection()->prepare('SELECT COUNT(*) FROM `customers`');
         $this->assertInstanceOf(\PDOStatement::class, $queryBuilder->execute($statement));
-    }
-
-    public function testExecuteWithInvalidStatement()
-    {
-        $statementBuilder = new StatementBuilderMock;
-        $queryBuilder = new QueryBuilderMock($this->connection, $statementBuilder);
-        $statement = $this->connection->prepare('SELECT * FROM `customers` WHERE customer_id = ?');
-        $this->expectException(DatabaseException::class);
-        $queryBuilder->execute($statement);
     }
 
     public function testProvideStatement()
     {
         $statementBuilder = new StatementBuilderMock;
-        $queryBuilder = new QueryBuilderMock($this->connection, $statementBuilder);
+        $queryBuilder = new QueryBuilderMock($this->getConnection(), $statementBuilder);
         $queryBuilder->setTestStatement('SELECT COUNT(*) FROM `customers`', []);
         $this->assertInstanceOf(\PDOStatement::class, $queryBuilder->exposedProvideStatement());
     }
@@ -83,7 +54,7 @@ class QueryBuilderTest extends DatabaseTest
     public function testPrepareStatementWithValidStatement()
     {
         $statementBuilder = new StatementBuilderMock;
-        $queryBuilder = new QueryBuilderMock($this->connection, $statementBuilder);
+        $queryBuilder = new QueryBuilderMock($this->getConnection(), $statementBuilder);
         $statement = $queryBuilder->exposedPrepareStatement(
             'SELECT * FROM customers WHERE customer_id IN (:p1,:p2,:p3,:p4)',
             [
@@ -99,8 +70,8 @@ class QueryBuilderTest extends DatabaseTest
     public function testPrepareStatementWithInvalidStatement()
     {
         $statementBuilder = new StatementBuilderMock;
-        $queryBuilder = new QueryBuilderMock($this->connection, $statementBuilder);
-        $this->expectException(DatabaseException::class);
+        $queryBuilder = new QueryBuilderMock($this->getConnection(), $statementBuilder);
+        $this->expectException(QueryBuilderException::class);
         $queryBuilder->exposedPrepareStatement('SELECT * FROM foo', []);
     }
 }

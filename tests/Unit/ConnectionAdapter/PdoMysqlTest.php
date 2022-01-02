@@ -1,28 +1,30 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit\ConnectionAdapter;
+namespace Bloatless\QueryBuilder\Test\Unit\ConnectionAdapter;
 
-use Bloatless\Endocore\Components\QueryBuilder\ConnectionAdapter\PdoMysql;
-use Bloatless\Endocore\Components\QueryBuilder\Exception\DatabaseException;
+require_once SRC_ROOT . '/ConnectionAdapter/PdoMysql.php';
+require_once SRC_ROOT . '/Exception/QueryBuilderException.php';
+
+use Bloatless\QueryBuilder\ConnectionAdapter\PdoMysql;
+use Bloatless\QueryBuilder\Exception\QueryBuilderException;
 use PHPUnit\Framework\TestCase;
 
 class PdoMysqlTest extends TestCase
 {
     public $config;
 
-    public $defaultCredentials;
+    public $credentials;
 
     public function setUp(): void
     {
-        $configData = include TESTS_ROOT . '/Fixtures/config.php';
+        $configData = include TESTS_ROOT . '/Fixtures/config/config.php';
         $this->config = $configData['db'];
-        $defaultConnection = $this->config['default_connection'];
-        $this->defaultCredentials = $this->config['connections'][$defaultConnection];
+        $this->credentials = $this->config['connections']['db1'];
     }
 
     public function testConnectWithValidCredentails()
     {
-        $credentials = $this->defaultCredentials;
+        $credentials = $this->credentials;
         $credentials['port'] = 3306;
         $adapter = new PdoMysql;
         $connection = $adapter->connect($credentials);
@@ -31,7 +33,7 @@ class PdoMysqlTest extends TestCase
 
     public function testConnectWithInvalidCredentails()
     {
-        $this->expectException(DatabaseException::class);
+        $this->expectException(QueryBuilderException::class);
         $adapter = new PdoMysql;
         $adapter->connect([]);
     }
@@ -39,7 +41,7 @@ class PdoMysqlTest extends TestCase
     public function testConnectWithInvalidTimezone()
     {
         $adapter = new PdoMysql;
-        $credentials = $this->defaultCredentials;
+        $credentials = $this->credentials;
         $credentials['timezone'] = 'Springfield';
         $this->expectException(\Exception::class);
         $connection = $adapter->connect($credentials);

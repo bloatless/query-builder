@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Bloatless\Endocore\Components\QueryBuilder\StatementBuilder;
+namespace Bloatless\QueryBuilder\StatementBuilder;
 
-class RawStatementBuider extends StatementBuilder
+require_once __DIR__ . '/StatementBuilder.php';
+
+class RawStatementBuilder extends StatementBuilder
 {
     /**
      * Prepares a raw statement and binds possible values.

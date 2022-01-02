@@ -1,15 +1,18 @@
 <?php
 
-namespace Bloatless\Endocore\Components\QueryBuilder\Tests\Unit;
+namespace Bloatless\QueryBuilder\Test\Unit;
 
+require_once SRC_ROOT . '/QueryBuilder.php';
+
+use Bloatless\QueryBuilder\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 
-abstract class DatabaseTest extends TestCase
+abstract class AbstractQueryBuilderTest extends TestCase
 {
     /**
      * @var \PDO $pdo
      */
-    static private $pdo = null;
+    private static $pdo = null;
 
     /**
      * Initializes database connection.
@@ -19,7 +22,10 @@ abstract class DatabaseTest extends TestCase
     final public function getConnection()
     {
         if (self::$pdo === null) {
-            self::$pdo = new \PDO($GLOBALS['DB_DSN'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD']);
+            $config = include TESTS_ROOT . '/Fixtures/config/config.php';
+            $defaultConnectionName = $config['db']['default_connection'];
+            $queryBuilder = new QueryBuilder($config['db']['connections'], $defaultConnectionName);
+            self::$pdo = $queryBuilder->provideConnection();
         }
 
         return self::$pdo;

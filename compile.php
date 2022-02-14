@@ -18,7 +18,7 @@ $phar = new Phar($pathToPhar);
 $phar->buildFromDirectory($pathToSrc);
 $phar->setStub(<<<ENDSTUB
 <?php
-Phar::mapPhar();
+Phar::mapPhar('query-builder.phar');
 include 'phar://query-builder.phar/QueryBuilderFactory.php';
 __HALT_COMPILER();
 ENDSTUB);
